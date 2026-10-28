@@ -76,7 +76,13 @@
   var oldToast = window.toast, oldBusy = window.busy, oldPost = window.post;
   window.toast = function (t) { return oldToast(tx(t)); };
   window.busy = function (o, t) { return oldBusy(o, tx(t)); };
-  window.post = function (p, fd) { fd.append('lang', cur); return oldPost(p, fd); };
+  var BASE = null;
+  function getBase() {
+    if (BASE !== null) return Promise.resolve(BASE);
+    if (location.hostname.indexOf('github.io') < 0) { BASE = ''; return Promise.resolve(BASE); }
+    return fetch('server.json?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (j) { BASE = (j.url || '').replace(/\/$/, ''); return BASE; });
+  }
+  window.post = function (p, fd) { fd.append('lang', cur); return getBase().then(function (b) { return oldPost(b + p, fd); }); };
 
   var st = document.createElement('style');
   st.textContent =
