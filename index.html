@@ -65,6 +65,8 @@ nav button.on{color:var(--pink)}
 #toast.on,#busy.on{opacity:1}
 @media (prefers-reduced-motion:reduce){.frame.scan::after{animation:none}*{transition:none!important}}
 </style>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
 </head>
 <body>
 <main>
@@ -276,5 +278,8 @@ $('go').onclick = async () => {
 };
 </script>
 <script src="i18n.js"></script>
+<script src="welcome.js"></script>
+<script src="credit.js"></script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js")}</script>
 </body>
 </html>
